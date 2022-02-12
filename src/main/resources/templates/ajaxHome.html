@@ -1,0 +1,205 @@
+<html xmlns:th="http://www.thymeleaf.org">
+
+<head>
+	<title>Home</title>
+	<meta http-equiv="Content-Type" content="text/html; charset=UTF-8" />
+</head>
+
+<script src="/js/jQuery-2.1.4.min.js"></script>
+
+<body>
+	<h1>ajax Home.</h1>
+	
+	<table>
+		<tr>
+			<td><label for="itemId">itemId</label></td>
+			<td><input type="text" id="itemId" name="itemId" value=""></td>
+		</tr>
+		<tr>
+			<td><label for="itemName">itemName</label></td>
+			<td><input type="text" id="itemName" name="itemName" value=""></td>
+		</tr>
+		<tr>
+			<td><label for="price">content</label></td>
+			<td><input type="text" id="price" name="price" value=""></td>
+		</tr>
+		<tr>
+			<td><label for="description">description</label></td>
+			<td><textarea id="description" name="description"></textarea></td>
+		</tr>
+		<tr>
+			<td><label for="inputFile">file</label></td>
+			<td><input type="file" id="picture" name="picture"></td>
+		</tr>
+		<tr>
+			<td>preview</td>
+			<td><div id="preview"><img src="item/display?itemId=165" width="210" height="50"></div></td>
+		</tr>
+	</table>
+	
+	<div>
+		<button id="listBtn">LIST</button>
+		<button id="readBtn">READ</button>
+		<button id="registerBtn">REGISTER</button>
+		<button id="deleteBtn">DELETE</button>
+		<button id="modifyBtn">MODIFY</button>
+		<button id="resetBtn">RESET</button>
+	</div>
+</body>
+
+<script>
+	$(document).ready(function() {
+		
+		$("#registerBtn").on("click", function(){
+			console.log("change"))
+			var itemId = $("#itemId");
+			var itemName = $("#itemName");
+			var price = $("#price");
+			var description = $("#description");
+			
+			var itemIdVal = itemId.val();
+			var itemNameVal = itemName.val();
+			var priceVal = price.val();
+			var descriptionVal = description.val();
+			
+			var itemObject = {
+				itemId : itemIdVal,
+				itemName: itemNameVal,
+				price : priceVal,
+				description : descriptionVal
+			};
+			
+			var file = $("input[name=picture]")[0].files[0];
+			
+			console.log("file = ", file)
+			
+			var formData = new FormData();
+			
+			formData.append("file", file);
+			formData.append("item", JSON.stringfy(itemObject));
+			
+			$.ajax({
+				type: "POST",
+				url: "/items",
+				data: formData,
+				dataType: "text",
+				processData: false,
+				contentType : false,
+				success : function() {
+					alert("Created");
+				},
+				error: function(xhr, textStatus, error) {
+					alert("code:" + xhr.status + "\n"
+					+ "message:" + xhr.responseText + "\n"
+					+ "error:" + error);
+				}
+			});
+		});
+		$("#listBtn").on("click", function(){
+			$.get("/items", function(data) {
+				console.log(data);
+				
+				alert(JSON.stringify(data));
+			});
+		});
+		$("#readBtn").on("click", function(){
+			var itemId = $("#itemId");
+			var itemIdVal = itemId.val();
+			
+			console.log(itemIdVal);
+			
+			$.ajax({
+				type: "GET",
+				url: "/items/" + itemIdVal,
+				contentType : "application/json; charset=UTF-8",
+				success : function(data) {
+					console.log(data);
+					
+					alert(JSON.stringify(data));
+					
+					$("#itemName").val(data.itemName);
+					$("#price").val(data.price);
+					$("#description").val(data.description);
+					
+					$("#preview").empty();
+				},
+				error: function(xhr, textStatus, error) {
+					alert("code:" + xhr.responseText + "\n"
+						+ "message:" + xhr.responseText + "\n"
+						+ "error:" + error);
+				}
+			});
+		});
+		$("#modifyBtn").on("click", function(){
+			var itemId = $("#itemId");
+			var itemName = $("#itemName");
+			var price = $("#price");
+			var description = $("#description");
+			
+			var itemIdVal = itemId.val();
+			var itemNameVal = itemName.val();
+			var priceVal = price.val();
+			var descriptionVal = description.val();
+			
+			var itemObject = {
+				itemId : itemIdVal,
+				itemName : itemNameVal,
+				price: priceVal,
+				description : descriptionVal
+			};
+			
+			var file = $("input[name=picture]")[0].files[0];
+			
+			console.log(file);
+			
+			var formData = new FormData();
+			
+			formData.append("file", file);
+			formData.append("item", JSON.stringfy(itemObject));
+			
+			$.ajax({
+				type: "PUT",
+				url: "/items",
+				data: formData,
+				processData: false,
+				contentType: false,
+				success : function() {
+					alert("Modified");
+				},
+				error: function(xhr, status, error) {
+					alert("code:" + xhr.status + "\n"
+					+ "message:" + xhr.responseText + "\n"
+					+ "error:" + error);
+				}
+			});
+		});
+		$("#deleteBtn").on("click", function(){
+			var itemId = $("#itemId");
+			var itemIdVal = itemId.val();
+			
+			$.ajax({
+				type: "DELETE",
+				url: "/items/" + itemIdVal,
+				contentType : "application/json; charset=UTF-8",
+				success : function() {
+					alert("Deleted");
+				},
+				error: function(xhr, status, error) {
+					alert("code:" + xhr.status + "\n"
+					+ "message:" + xhr.responseText + "\n"
+					+ "error:" + error);
+				}
+			});
+		});
+		$("#resetBtn").on("click", function(){
+			$("#itemId").val("");
+			$("#itemName").val("");
+			$("#price").val("");
+			$("#description").val("");
+			
+			$("#preview").empty();
+		});
+	});
+</script>
+
+</html>
