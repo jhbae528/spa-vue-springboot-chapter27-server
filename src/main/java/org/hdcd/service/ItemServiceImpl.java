@@ -3,7 +3,7 @@ package org.hdcd.service;
 import java.util.List;
 
 import org.hdcd.domain.Item;
-import org.hdcdrepository.ItemRepository;
+import org.hdcd.repository.ItemRepository;
 import org.springframework.data.domain.Sort;
 import org.springframework.data.domain.Sort.Direction;
 import org.springframework.stereotype.Service;
@@ -32,6 +32,7 @@ public class ItemServiceImpl implements ItemService {
 		return repository.getOne(itemId);
 	}
 
+	@Transactional
 	public void modify(Item item) throws Exception {
 		Item itemEntity = repository.getOne(item.getItemId());
 		
@@ -40,6 +41,7 @@ public class ItemServiceImpl implements ItemService {
 		itemEntity.setDescription(item.getDescription());
 		itemEntity.setPictureUrl(item.getPictureUrl());
 		
+		repository.save(itemEntity);		
 	}
 	
 	public void remove(Long itemId) throws Exception {

@@ -20,7 +20,7 @@
 			<td><input type="text" id="itemName" name="itemName" value=""></td>
 		</tr>
 		<tr>
-			<td><label for="price">content</label></td>
+			<td><label for="price">price</label></td>
 			<td><input type="text" id="price" name="price" value=""></td>
 		</tr>
 		<tr>
@@ -33,7 +33,7 @@
 		</tr>
 		<tr>
 			<td>preview</td>
-			<td><div id="preview"><img src="item/display?itemId=165" width="210" height="50"></div></td>
+			<td><div id="preview"><img src="items/display?itemId=165" width="210" height="50"></div></td>
 		</tr>
 	</table>
 	
@@ -51,7 +51,7 @@
 	$(document).ready(function() {
 		
 		$("#registerBtn").on("click", function(){
-			console.log("change"))
+			console.log("change");
 			var itemId = $("#itemId");
 			var itemName = $("#itemName");
 			var price = $("#price");
@@ -76,7 +76,7 @@
 			var formData = new FormData();
 			
 			formData.append("file", file);
-			formData.append("item", JSON.stringfy(itemObject));
+			formData.append("item", JSON.stringify(itemObject));
 			
 			$.ajax({
 				type: "POST",
@@ -155,7 +155,7 @@
 			var formData = new FormData();
 			
 			formData.append("file", file);
-			formData.append("item", JSON.stringfy(itemObject));
+			formData.append("item", JSON.stringify(itemObject));
 			
 			$.ajax({
 				type: "PUT",

@@ -192,7 +192,7 @@ public class ItemController {
 		
 		String createdFileName = uid.toString() + "_" + originName;
 		
-		File target = new File(uploadPath);
+		File target = new File(uploadPath, createdFileName);
 		
 		FileCopyUtils.copy(data, target);
 				
