@@ -16,5 +16,5 @@ public interface ItemService {
 	
 	public void remove(Long itemId) throws Exception;
 	
-	public String getPicture(Long itemId) throws Exception;
+	public List<String> getAttach(Long itemId) throws Exception;
 }
