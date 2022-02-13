@@ -8,6 +8,7 @@ public class HomeController {
 
 	@GetMapping("/ajaxHome")
 	public String ajaxHome() {
+		// test
 		return "ajaxHome";
 	}
 }
